@@ -192,6 +192,47 @@ void test_reverse_which_reverse_the_given_list(){
   assert(10 == *(int *)e2->value);
 };
 
+void add_5(void *hint,void *sorceItem,void *destinationItem){
+   *(int *)destinationItem = *(int *)sorceItem + *(int *)hint;
+};
+
+void test_map_which_add_by_5_with_every_value(){
+  LinkedList list = createList();
+  int a = 10;
+  int b = 20;
+  int c = 30;
+  int d = 40;
+  int hint = 5;
+  add_to_list(&list,&a);
+  add_to_list(&list,&b);
+  add_to_list(&list,&c);
+  add_to_list(&list,&d);
+  LinkedList mappedList = map(list,&add_5,&hint);
+  Element *e1 = mappedList.head;
+  assert(15 == *(int *)e1->value);
+};
+
+void *add(void* hint, void* previousItem, void* item){
+  *(int *)item = *(int *)previousItem + *(int *)item;
+  return (int *)item;
+};
+
+void test_reduce_returns_total_of_all_the_values_of_list(){
+  LinkedList list = createList();
+  int a = 10;
+  int b = 20;
+  int c = 30;
+  int d = 40;
+  add_to_list(&list,&a);
+  add_to_list(&list,&b);
+  add_to_list(&list,&c);
+  add_to_list(&list,&d);
+  int hint = 0;
+  int initialValue = 2;
+  void *reducedValue = reduce(list,add,&hint,&initialValue);
+  assert(102 == *(int *)reducedValue);
+};
+
 int main() {
   test_create_linkedList();
   test_to_add_element_at_the_end();
@@ -207,6 +248,8 @@ int main() {
   test_asArray_add_elements_of_float_type_to_an_array_from_a_given_list();
   test_filter_a_given_linked_list_according_to_the_condition();
   test_reverse_which_reverse_the_given_list();
+  test_map_which_add_by_5_with_every_value();
+  test_reduce_returns_total_of_all_the_values_of_list();
   printf("Passing\n");
   return 0;
 };

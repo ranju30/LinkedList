@@ -124,3 +124,24 @@ LinkedList reverse(LinkedList list){
   }
   return reversedList;
 };
+
+LinkedList map(LinkedList list,ConvertFunc *fun,void *hint){
+  LinkedList mappedList = createList();
+  Element *e1 = list.head;
+  for(int i=0;i<list.length;i++){
+    void *ele = malloc(sizeof(void));
+    fun(hint,e1->value,ele);
+    add_to_list(&mappedList,ele);
+    e1 = e1->next;
+  }
+  return mappedList;
+};
+
+void *reduce(LinkedList list,Reducer fun,void *hint,void *initialValue){
+  Element *e1 = list.head;
+  for(int i=0;i<list.length;i++){
+    initialValue = fun(hint,initialValue,e1->value);
+    e1 = e1->next;
+  }
+  return initialValue;
+};
